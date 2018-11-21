@@ -1,16 +1,17 @@
 package com.project
 
+import org.springframework.boot.autoconfigure.SpringBootApplication
 import spock.lang.Specification
 
 class ApplicationUnitSpec extends Specification {
-    def application
+    Application application
 
     def setup() {
         application = new Application()
     }
 
-    def "First test"() {
+    def "Class is annotated with Spring Boot's annotation"() {
         expect:
-            application != null
+            application.getClass().isAnnotationPresent(SpringBootApplication.class);
     }
 }
