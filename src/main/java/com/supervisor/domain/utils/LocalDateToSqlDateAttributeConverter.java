@@ -1,4 +1,4 @@
-package com.project.domain.utils;
+package com.supervisor.domain.utils;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

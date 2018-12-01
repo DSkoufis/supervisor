@@ -1,16 +1,15 @@
-package com.project;
+package com.supervisor;
 
-import com.project.domain.Project;
-import com.project.domain.utils.Product;
-import com.project.repository.ProductRepository;
-import com.project.repository.ProjectRepository;
+import com.supervisor.domain.project.Project;
+import com.supervisor.domain.Product;
+import com.supervisor.repository.ProductRepository;
+import com.supervisor.repository.project.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 @SpringBootApplication

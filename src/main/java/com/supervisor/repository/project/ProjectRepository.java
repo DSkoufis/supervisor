@@ -1,6 +1,6 @@
-package com.project.repository;
+package com.supervisor.repository.project;
 
-import com.project.domain.Project;
+import com.supervisor.domain.project.Project;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ProjectRepository extends CrudRepository<Project, Long> {
