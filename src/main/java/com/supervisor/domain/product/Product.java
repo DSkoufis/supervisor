@@ -35,5 +35,44 @@ public class Product {
     private Set<Vendor> vendors = new HashSet<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MajorVersion> versions = new ArrayList<>();
+    private Set<MajorVersion> versions = new HashSet<>();
+
+    public Product() {
+    }
+
+    public Product(String name) {
+        this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set<Vendor> getVendors() {
+        return vendors;
+    }
+
+    public void addVendor(Vendor vendor) {
+        vendors.add(vendor);
+        if (!vendor.getProducts().contains(this)) {
+            vendor.addProduct(this);
+        }
+    }
+
+    public Set<MajorVersion> getVersions() {
+        return versions;
+    }
+
+    public void addVersion(MajorVersion version) {
+        this.versions.add(version);
+        if (version.getProduct() != this) version.setProduct(this);
+    }
 }
