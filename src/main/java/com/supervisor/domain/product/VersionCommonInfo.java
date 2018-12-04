@@ -4,19 +4,19 @@ import java.time.LocalDate;
 
 public interface VersionCommonInfo {
 
-    public String getVersion();
+    String getVersion();
 
-    public void setVersion(String version);
+    void setVersion(String version);
 
-    public String getDescription();
+    String getDescription();
 
-    public void setDescription(String description);
+    void setDescription(String description);
 
-    public LocalDate getReleaseDate();
+    LocalDate getReleaseDate();
 
-    public void setReleaseDate(LocalDate releaseDate);
+    void setReleaseDate(LocalDate releaseDate);
 
-    public String getNotes();
+    String getNotes();
 
-    public void setNotes(String notes);
+    void setNotes(String notes);
 }

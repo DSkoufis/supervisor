@@ -6,7 +6,7 @@ import javax.persistence.Embeddable;
 import java.time.LocalDate;
 
 @Embeddable
-class ProductVersionCommonInfo implements VersionCommonInfo{
+class ProductVersionCommonInfo implements VersionCommonInfo {
 
     @Column(name = "version", nullable = false)
     private String version;
