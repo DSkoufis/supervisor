@@ -1,4 +1,4 @@
-package com.supervisor.dao.product;
+package com.supervisor.dao;
 
 import com.supervisor.domain.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
