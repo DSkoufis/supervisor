@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -61,6 +62,13 @@ public class Product {
     public void addVendor(Vendor vendor) {
         vendors.add(vendor);
         if (!vendor.getProducts().contains(this)) {
+            vendor.addProduct(this);
+        }
+    }
+
+    public void addVendors(List<Vendor> vendors) {
+        this.vendors.addAll(vendors);
+        for (Vendor vendor : this.vendors) {
             vendor.addProduct(this);
         }
     }
