@@ -1,6 +1,6 @@
 package com.supervisor.service;
 
-import com.supervisor.command.ProductCreateParams;
+import com.supervisor.command.ProductCreateCommand;
 import com.supervisor.dao.ProductDao;
 import com.supervisor.domain.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,28 +11,23 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    private ProductDao productRepository;
+    private final ProductDao productRepository;
 
-    @Override
-    public List<Product> getProducts() {
+	@Autowired
+	public ProductServiceImpl(ProductDao productRepository) {
+		this.productRepository = productRepository;
+	}
+
+	@Override
+    public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
     @Override
-    public Boolean createProduct(ProductCreateParams params) {
-        if (params.validate()) {
-            Product product = new Product(params.getName());
+	public Product createProduct(ProductCreateCommand cmd) {
+        Product product = new Product(cmd.getName());
+        product.addVendors(cmd.getVendors());
 
-            if (!params.getVendors().isEmpty()) {
-                product.addVendors(params.getVendors());
-            }
-
-            product = productRepository.save(product);
-            if (product != null) {
-                return true;
-            }
-        }
-        return false;
+        return productRepository.save(product);
     }
 }

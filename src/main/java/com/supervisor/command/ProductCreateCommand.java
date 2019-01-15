@@ -5,7 +5,7 @@ import com.supervisor.domain.product.Vendor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductCreateCommand implements ProductCreateParams {
+public class ProductCreateCommand {
 
     private String name;
     private List<Vendor> vendors;
@@ -20,31 +20,19 @@ public class ProductCreateCommand implements ProductCreateParams {
         this.vendors = vendors;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
 
-    @Override
     public List<Vendor> getVendors() {
         return vendors;
     }
 
-    @Override
     public void setVendors(List<Vendor> vendors) {
         this.vendors = vendors;
-    }
-
-    @Override
-    public boolean validate() {
-        if (name == null || name.trim().equals("")) {
-            return false;
-        }
-        return true;
     }
 }

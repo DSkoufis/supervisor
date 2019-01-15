@@ -11,6 +11,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,7 @@ public class Product {
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private Long id;
 
+    @NotNull
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
@@ -34,7 +36,7 @@ public class Product {
     private Set<Vendor> vendors = new HashSet<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<MajorVersion> versions = new HashSet<>();
+    private Set<MajorVersion> majorVersions = new HashSet<>();
 
     public Product() {
     }
@@ -74,11 +76,11 @@ public class Product {
     }
 
     public Set<MajorVersion> getVersions() {
-        return versions;
+        return majorVersions;
     }
 
-    public void addVersion(MajorVersion version) {
-        this.versions.add(version);
-        if (version.getProduct() != this) version.setProduct(this);
+    public void addVersion(MajorVersion majorVersions) {
+        this.majorVersions.add(majorVersions);
+        if (majorVersions.getProduct() != this) majorVersions.setProduct(this);
     }
 }
