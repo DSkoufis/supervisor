@@ -12,8 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -68,10 +68,9 @@ public class Product {
         }
     }
 
-    public void addVendors(List<Vendor> vendors) {
-        this.vendors.addAll(vendors);
-        for (Vendor vendor : this.vendors) {
-            vendor.addProduct(this);
+    public void addVendors(Collection<Vendor> vendors) {
+        for (Vendor vendor : vendors) {
+            addVendor(vendor);
         }
     }
 
@@ -79,8 +78,14 @@ public class Product {
         return majorVersions;
     }
 
-    public void addVersion(MajorVersion majorVersions) {
-        this.majorVersions.add(majorVersions);
-        if (majorVersions.getProduct() != this) majorVersions.setProduct(this);
+    public void addMajorVersion(MajorVersion majorVersion) {
+        this.majorVersions.add(majorVersion);
+        if (majorVersion.getProduct() != this) majorVersion.setProduct(this);
+    }
+
+    public void addMajorVersions(Collection<MajorVersion> majorVersions) {
+        for (MajorVersion version : majorVersions) {
+            addMajorVersion(version);
+        }
     }
 }

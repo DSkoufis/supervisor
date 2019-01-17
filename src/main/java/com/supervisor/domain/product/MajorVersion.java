@@ -49,7 +49,7 @@ public class MajorVersion extends Version<MajorVersion> {
 
     public void setProduct(Product product) {
         this.product = product;
-        if (!product.getVersions().contains(this)) product.addVersion(this);
+        if (!product.getVersions().contains(this)) product.addMajorVersion(this);
     }
 
     public Set<MinorVersion> getMinorVersions() {
