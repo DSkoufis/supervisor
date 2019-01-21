@@ -7,7 +7,7 @@
     <description>Core Tag library descriptor</description>
     <tlib-version>1.0</tlib-version>
     <short-name>supervisor</short-name>
-    <uri>http://www.supervisor.com/tags</uri>
+    <uri>http://www.supervisor.com/tags/core</uri>
 
     <tag>
         <description>Prints the product's vendors in a nice format</description>
@@ -24,16 +24,19 @@
             <description>A boolean value to specify if the vendors should all be displayed as URLs. Defaults to false</description>
             <name>asLink</name>
             <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <description>If all the vendors should be in the same line. Default is true</description>
             <name>inLine</name>
             <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <description>The field of the Vendor.class that is going to be printed. Default is the ID</description>
             <name>field</name>
             <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
 </taglib>
