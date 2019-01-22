@@ -10,33 +10,26 @@
     <uri>http://www.supervisor.com/tags/core</uri>
 
     <tag>
-        <description>Prints the product's vendors in a nice format</description>
-        <name>productVendors</name>
-        <tag-class>com.supervisor.tags.PrintProductVendorsTag</tag-class>
-        <body-content>empty</body-content>
+        <description>Joins a Collection with the given param</description>
+        <name>joinList</name>
+        <tag-class>com.supervisor.tags.JoinListTag</tag-class>
+        <body-content>JSP</body-content>
         <attribute>
-            <description>A Collection of Vendor.class to be printed</description>
-            <name>vendors</name>
+            <description>The collection to be printed</description>
+            <name>list</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>A boolean value to specify if the vendors should all be displayed as URLs. Defaults to false</description>
-            <name>asLink</name>
-            <required>false</required>
+            <description>The delimiter that is going to be used</description>
+            <name>delimiter</name>
+            <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>If all the vendors should be in the same line. Default is true</description>
-            <name>inLine</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <description>The field of the Vendor.class that is going to be printed. Default is the ID</description>
-            <name>field</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
+            <description>The item that will return on each loop</description>
+            <name>item</name>
+            <required>true</required>
         </attribute>
     </tag>
 </taglib>
