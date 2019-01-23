@@ -10,7 +10,7 @@ public class JoinListTag extends SimpleTagSupport {
 
     private Iterator iterator;
     private String delimiter;
-    private String item;
+    private String var;
 
     public void setList(Collection list) {
         if (list.size() > 0) {
@@ -22,8 +22,8 @@ public class JoinListTag extends SimpleTagSupport {
         this.delimiter = delimiter;
     }
 
-    public void setItem(String item) {
-        this.item = item;
+    public void setVar(String var) {
+        this.var = var;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class JoinListTag extends SimpleTagSupport {
         }
 
         while (iterator.hasNext()) {
-            getJspContext().setAttribute(item, iterator.next());
+            getJspContext().setAttribute(var, iterator.next());
             getJspBody().invoke(null);
 
             if (iterator.hasNext()) {

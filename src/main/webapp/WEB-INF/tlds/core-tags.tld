@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
-        version="2.0">
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
 
     <description>Core Tag library descriptor</description>
     <tlib-version>1.0</tlib-version>
-    <short-name>supervisor</short-name>
+    <short-name>visor</short-name>
     <uri>http://www.supervisor.com/tags/core</uri>
 
     <tag>
-        <description>Joins a Collection with the given param</description>
+        <description>Joins a Collection with the given delimiter param</description>
         <name>joinList</name>
         <tag-class>com.supervisor.tags.JoinListTag</tag-class>
-        <body-content>JSP</body-content>
+        <body-content>scriptless</body-content>
         <attribute>
             <description>The collection to be printed</description>
             <name>list</name>
@@ -24,11 +24,11 @@
             <description>The delimiter that is going to be used</description>
             <name>delimiter</name>
             <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
+            <rtexprvalue>false</rtexprvalue>
         </attribute>
         <attribute>
-            <description>The item that will return on each loop</description>
-            <name>item</name>
+            <description>The item that will return on each loop to get a handle on each iteration</description>
+            <name>var</name>
             <required>true</required>
         </attribute>
     </tag>
