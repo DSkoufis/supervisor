@@ -1,7 +1,11 @@
 <!DOCTYPE html>
-<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="visor" uri="http://www.supervisor.com/tags/core" %>
+
+<jsp:useBean id="products" scope="request" type="java.util.List"/>
+<jsp:useBean id="vendor" class="com.supervisor.domain.product.Vendor"/>
+<jsp:useBean id="version" class="com.supervisor.domain.product.MajorVersion"/>
 
 <html>
 <head>
