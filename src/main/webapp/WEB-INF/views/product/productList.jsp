@@ -9,34 +9,39 @@
 
 <html>
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <title>Products -- List</title>
 </head>
 <body>
+
 <h1>Products List</h1>
-<table class="table table-striped responsive">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Vendors</th>
-        <th>Versions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${products}" var="product">
+<hr>
+<div class="container">
+    <table class="table table-striped table-bordered">
+        <thead class="thead-light">
         <tr>
-            <td><c:out value="${product.id}"/></td>
-            <td><c:out value="${product.name}"/></td>
-            <td>
-                <visor:joinList list="${product.vendors}" delimiter=", " var="vendor">${vendor.id}</visor:joinList>
-            </td>
-            <td>
-                <visor:joinList list="${product.versions}" delimiter=", "
-                                var="version">${version.version}</visor:joinList>
-            </td>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Vendors</th>
+            <th scope="col">Versions</th>
         </tr>
-    </c:forEach>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        <c:forEach items="${products}" var="product">
+            <tr>
+                <th scope="row"><c:out value="${product.id}"/></th>
+                <td><c:out value="${product.name}"/></td>
+                <td>
+                    <visor:joinList list="${product.vendors}" delimiter=", " var="vendor">${vendor.id}</visor:joinList>
+                </td>
+                <td>
+                    <visor:joinList list="${product.versions}" delimiter=", " var="version">${version.version}</visor:joinList>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
