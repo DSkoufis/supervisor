@@ -30,14 +30,10 @@
                         <th scope="row"><c:out value="${product.id}"/></th>
                         <td><c:out value="${product.name}"/></td>
                         <td>
-                            <visor:joinList list="${product.vendors}" delimiter=", " var="vendor">
-                                ${vendor.id}
-                            </visor:joinList>
+                            <visor:joinList list="${product.vendors}" delimiter=", " var="vendor">${vendor.name}</visor:joinList>
                         </td>
                         <td>
-                            <visor:joinList list="${product.versions}" delimiter=", " var="version">
-                                ${version.version}
-                            </visor:joinList>
+                            <visor:joinList list="${product.versions}" delimiter=", " var="version">${version.version}</visor:joinList>
                         </td>
                     </tr>
                 </c:forEach>
