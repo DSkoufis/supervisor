@@ -13,11 +13,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@Controller
-@RequestMapping(value = "/product")
-public class ProductController {
+import static com.supervisor.utils.constants.ControllerMapping.PRODUCT_CONTROLLER_ROOT;
+import static com.supervisor.utils.constants.ViewMapping.PRODUCT_VIEW_PATH;
 
-    private static final String VIEW_PATH_DIR = "product/";
+@Controller
+@RequestMapping(value = PRODUCT_CONTROLLER_ROOT)
+public class ProductController {
 
     private final ProductService productService;
 
@@ -28,7 +29,7 @@ public class ProductController {
 
     @GetMapping(value = {"", "/"})
     public ModelAndView index() {
-        ModelAndView model = new ModelAndView(VIEW_PATH_DIR + "productList");
+        ModelAndView model = new ModelAndView(PRODUCT_VIEW_PATH + "productList");
         List<Product> products = productService.getAllProducts();
         model.addObject("products", products);
         return model;
