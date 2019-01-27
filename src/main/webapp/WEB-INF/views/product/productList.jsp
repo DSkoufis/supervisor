@@ -1,44 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="visor" uri="http://www.supervisor.com/tags/core" %>
+
 <%@ taglib prefix="tt" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="product" tagdir="/WEB-INF/tags/product" %>
 
 <tt:main>
-    <jsp:attribute name="header">
-            <title>Products - List</title>
-    </jsp:attribute>
+    <jsp:attribute name="header"><title>Products - List</title></jsp:attribute>
+
     <jsp:body>
         <jsp:useBean id="products" scope="request" type="java.util.List"/>
-        <jsp:useBean id="vendor" class="com.supervisor.domain.product.Vendor"/>
-        <jsp:useBean id="version" class="com.supervisor.domain.product.MajorVersion"/>
+
 
         <h1>Products List</h1>
         <hr>
         <div class="container">
-            <table class="table table-striped table-bordered">
-                <thead class="thead-light">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Vendors</th>
-                    <th scope="col">Versions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${products}" var="product">
-                    <tr>
-                        <th scope="row"><c:out value="${product.id}"/></th>
-                        <td><c:out value="${product.name}"/></td>
-                        <td>
-                            <visor:joinList list="${product.vendors}" delimiter=", " var="vendor">${vendor.name}</visor:joinList>
-                        </td>
-                        <td>
-                            <visor:joinList list="${product.versions}" delimiter=", " var="version">${version.version}</visor:joinList>
-                        </td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+            <product:printProducts products="${products}"/>
         </div>
     </jsp:body>
 </tt:main>
