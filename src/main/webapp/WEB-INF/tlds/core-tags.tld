@@ -12,7 +12,7 @@
     <tag>
         <description>Joins a Collection with the given delimiter param</description>
         <name>joinList</name>
-        <tag-class>com.supervisor.tags.JoinListTag</tag-class>
+        <tag-class>com.supervisor.util.tag.JoinListTag</tag-class>
         <body-content>scriptless</body-content>
         <attribute>
             <description>The collection to be printed</description>

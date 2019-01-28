@@ -1,4 +1,4 @@
-package com.supervisor.utils.constants;
+package com.supervisor.util.constant;
 
 public final class ViewMapping {
     public static final String PRODUCT_VIEW_PATH = "product/";

@@ -1,4 +1,4 @@
-package com.supervisor.tags;
+package com.supervisor.util.tag;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;

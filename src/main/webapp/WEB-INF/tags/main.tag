@@ -1,4 +1,4 @@
-<%@ tag description="Core Page Template" import="com.supervisor.utils.constants.ViewMapping" %>
+<%@ tag description="Core Page Template" import="com.supervisor.util.constant.ViewMapping" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 

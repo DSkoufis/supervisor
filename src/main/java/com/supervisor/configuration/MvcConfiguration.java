@@ -10,11 +10,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import static com.supervisor.utils.constants.ViewMapping.STATIC_CSS_ROOT;
-import static com.supervisor.utils.constants.ViewMapping.STATIC_JS_ROOT;
-import static com.supervisor.utils.constants.ViewMapping.STATIC_LIBRARIES_ROOT;
-import static com.supervisor.utils.constants.ViewMapping.STATIC_RESOURCES_PATH;
-import static com.supervisor.utils.constants.ViewMapping.VIEWS_ROOT_PATH;
+import static com.supervisor.util.constant.ViewMapping.STATIC_CSS_ROOT;
+import static com.supervisor.util.constant.ViewMapping.STATIC_JS_ROOT;
+import static com.supervisor.util.constant.ViewMapping.STATIC_LIBRARIES_ROOT;
+import static com.supervisor.util.constant.ViewMapping.STATIC_RESOURCES_PATH;
+import static com.supervisor.util.constant.ViewMapping.VIEWS_ROOT_PATH;
 
 @EnableWebMvc
 @Configuration
