@@ -2,7 +2,7 @@ package com.supervisor.controller;
 
 import com.supervisor.domain.product.Product;
 import com.supervisor.service.ProductService;
-import com.supervisor.utils.builder.ProductBuilder;
+import com.supervisor.util.builder.ProductBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

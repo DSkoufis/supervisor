@@ -1,4 +1,4 @@
-package com.supervisor.utils.builder;
+package com.supervisor.util.builder;
 
 import com.supervisor.domain.product.MajorVersion;
 import com.supervisor.domain.product.Product;

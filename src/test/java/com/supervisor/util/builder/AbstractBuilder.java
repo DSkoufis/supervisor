@@ -1,4 +1,4 @@
-package com.supervisor.utils.builder;
+package com.supervisor.util.builder;
 
 public class AbstractBuilder<T> {
 

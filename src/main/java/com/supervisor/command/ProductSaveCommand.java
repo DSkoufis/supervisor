@@ -5,17 +5,21 @@ import com.supervisor.domain.product.Vendor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductCreateCommand {
+public class ProductSaveCommand {
 
     private String name;
     private List<Vendor> vendors;
 
-    public ProductCreateCommand(String name) {
-        this.name = name;
+    public ProductSaveCommand() {
         this.vendors = new ArrayList<Vendor>();
     }
 
-    public ProductCreateCommand(String name, List<Vendor> vendors) {
+    public ProductSaveCommand(String name) {
+        this();
+        this.name = name;
+    }
+
+    public ProductSaveCommand(String name, List<Vendor> vendors) {
         this(name);
         this.vendors = vendors;
     }

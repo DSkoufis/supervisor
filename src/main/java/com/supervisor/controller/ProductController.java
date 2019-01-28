@@ -1,6 +1,6 @@
 package com.supervisor.controller;
 
-import com.supervisor.command.ProductCreateCommand;
+import com.supervisor.command.ProductSaveCommand;
 import com.supervisor.domain.product.Product;
 import com.supervisor.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-import static com.supervisor.utils.constants.ControllerMapping.PRODUCT_CONTROLLER_ROOT;
-import static com.supervisor.utils.constants.ViewMapping.PRODUCT_VIEW_PATH;
+import static com.supervisor.util.constant.ControllerMapping.PRODUCT_CONTROLLER_ROOT;
+import static com.supervisor.util.constant.ViewMapping.PRODUCT_VIEW_PATH;
 
 @Controller
 @RequestMapping(value = PRODUCT_CONTROLLER_ROOT)
@@ -35,9 +35,9 @@ public class ProductController {
         return model;
     }
 
-    @PostMapping(value = "create")
-    public void createProduct(@RequestBody ProductCreateCommand cmd) {
+    @PostMapping(value = "save")
+    public void createProduct(@RequestBody ProductSaveCommand cmd) {
         // TODO Could this return the product? think so
-        productService.createProduct(cmd);
+        productService.saveProduct(cmd);
     }
 }

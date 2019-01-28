@@ -11,7 +11,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,7 +25,7 @@ public class Product {
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private Long id;
 
-    @NotNull
+    @NotBlank
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
