@@ -8,13 +8,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "product_major_version")
 public class MajorVersion extends Version<MajorVersion> {
 
-	@NotNull
+    @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
@@ -28,19 +29,6 @@ public class MajorVersion extends Version<MajorVersion> {
 
     public MajorVersion(String version) {
         super(version);
-    }
-
-    public MajorVersion(String version, String description) {
-        super(version, description);
-    }
-
-    public MajorVersion(String version, String description, String notes) {
-        super(version, description, notes);
-    }
-
-    public MajorVersion(String version, MajorVersion precedent) {
-        super(version, precedent);
-        this.product = precedent.getProduct();
     }
 
     public Product getProduct() {
@@ -59,5 +47,20 @@ public class MajorVersion extends Version<MajorVersion> {
     public void addMinorVersion(MinorVersion minorVersion) {
         this.minorVersions.add(minorVersion);
         if (minorVersion.getMajorVersion() != this) minorVersion.setMajorVersion(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MajorVersion)) return false;
+        MajorVersion version = (MajorVersion) o;
+        return super.equals(version) &&
+                product.equals(version.product) &&
+                minorVersions.equals(version.minorVersions);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode() + Objects.hash(product, minorVersions);
     }
 }

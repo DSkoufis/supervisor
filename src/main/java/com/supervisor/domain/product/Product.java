@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -42,7 +43,7 @@ public class Product {
     }
 
     public Product(String name) {
-        this.name = name;
+        this.name = Objects.requireNonNull(name);
     }
 
     public Long getId() {
@@ -87,5 +88,21 @@ public class Product {
         for (MajorVersion version : majorVersions) {
             addMajorVersion(version);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product)) return false;
+        Product product = (Product) o;
+        return id.equals(product.id) &&
+                name.equals(product.name) &&
+                Objects.equals(vendors, product.vendors) &&
+                Objects.equals(majorVersions, product.majorVersions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, vendors, majorVersions);
     }
 }

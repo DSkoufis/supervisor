@@ -10,6 +10,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @MappedSuperclass
@@ -30,23 +31,12 @@ public abstract class Version<T extends Version> implements VersionCommonInfo {
     private Set<T> updates = new HashSet<>();
 
     protected Version() {
+        this.productInfo = new ProductVersionCommonInfo();
     }
 
     protected Version(String version) {
-        this.productInfo = new ProductVersionCommonInfo(version);
-    }
-
-    protected Version(String version, String description) {
-        this.productInfo = new ProductVersionCommonInfo(version, description);
-    }
-
-    protected Version(String version, String description, String notes) {
-        this.productInfo = new ProductVersionCommonInfo(version, description, notes);
-    }
-
-    protected Version(String version, T precedent) {
-        this.productInfo = new ProductVersionCommonInfo(version);
-        this.precedent = precedent;
+        this();
+        this.productInfo.setVersion(Objects.requireNonNull(version));
     }
 
     public Long getId() {
@@ -109,5 +99,21 @@ public abstract class Version<T extends Version> implements VersionCommonInfo {
     public void addUpdate(T update) {
         this.updates.add(update);
         if (update.getPrecedent() != this) update.setPrecedent(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Version)) return false;
+        Version<?> version = (Version<?>) o;
+        return id.equals(version.id) &&
+                productInfo.equals(version.productInfo) &&
+                Objects.equals(precedent, version.precedent) &&
+                Objects.equals(updates, version.updates);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, productInfo, precedent, updates);
     }
 }

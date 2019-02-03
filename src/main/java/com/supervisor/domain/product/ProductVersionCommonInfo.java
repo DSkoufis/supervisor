@@ -6,15 +6,16 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Embeddable
 class ProductVersionCommonInfo implements VersionCommonInfo {
 
-	@NotBlank
+    @NotBlank
     @Column(name = "version", nullable = false)
     private String version;
 
-	@Size(max = 255)
+    @Size(max = 255)
     @Column(name = "description")
     private String description;
 
@@ -24,57 +25,54 @@ class ProductVersionCommonInfo implements VersionCommonInfo {
     @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
 
-    public ProductVersionCommonInfo() {
+    ProductVersionCommonInfo() {
     }
 
-    public ProductVersionCommonInfo(String version) {
-        this.version = version;
-    }
-
-    public ProductVersionCommonInfo(String version, String description) {
-        this(version);
-        this.description = description;
-    }
-
-    public ProductVersionCommonInfo(String version, String description, String notes) {
-        this(version, description);
-        this.notes = notes;
-    }
-
-    public ProductVersionCommonInfo(String version, String description, LocalDate releaseDate, String notes) {
-        this(version, description, notes);
-        this.releaseDate = releaseDate;
-    }
-
-    public String getVersion() {
+    @Override public String getVersion() {
         return version;
     }
 
-    public void setVersion(String version) {
+    @Override public void setVersion(String version) {
         this.version = version;
     }
 
-    public String getDescription() {
+    @Override public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    @Override public void setDescription(String description) {
         this.description = description;
     }
 
-    public LocalDate getReleaseDate() {
+    @Override public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(LocalDate releaseDate) {
+    @Override public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 
-    public String getNotes() {
+    @Override public String getNotes() {
         return notes;
     }
 
-    public void setNotes(String notes) {
+    @Override public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ProductVersionCommonInfo)) return false;
+        ProductVersionCommonInfo that = (ProductVersionCommonInfo) o;
+        return version.equals(that.version) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(releaseDate, that.releaseDate) &&
+                Objects.equals(notes, that.notes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(version, description, releaseDate, notes);
     }
 }

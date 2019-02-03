@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -63,5 +64,21 @@ public class Vendor {
         if (!product.getVendors().contains(this)) {
             product.addVendor(this);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Vendor)) return false;
+        Vendor vendor = (Vendor) o;
+        return id.equals(vendor.id) &&
+                name.equals(vendor.name) &&
+                Objects.equals(website, vendor.website) &&
+                Objects.equals(products, vendor.products);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, website, products);
     }
 }

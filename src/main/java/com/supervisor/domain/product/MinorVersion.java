@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Table(name = "product_minor_version")
@@ -22,23 +23,6 @@ public class MinorVersion extends Version<MinorVersion> {
         super(version);
     }
 
-    public MinorVersion(String version, String description) {
-        super(version, description);
-    }
-
-    public MinorVersion(String version, String description, String notes) {
-        super(version, description, notes);
-    }
-
-    public MinorVersion(String version, MinorVersion precedent) {
-        super(version, precedent);
-    }
-
-    public MinorVersion(String version, MajorVersion majorVersion) {
-        super(version);
-        this.majorVersion = majorVersion;
-    }
-
     public MajorVersion getMajorVersion() {
         return majorVersion;
     }
@@ -46,5 +30,18 @@ public class MinorVersion extends Version<MinorVersion> {
     public void setMajorVersion(MajorVersion majorVersion) {
         this.majorVersion = majorVersion;
         if (!majorVersion.getMinorVersions().contains(this)) majorVersion.addMinorVersion(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MinorVersion)) return false;
+        MinorVersion that = (MinorVersion) o;
+        return super.equals(that) && majorVersion.equals(that.majorVersion);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode() + Objects.hash(majorVersion);
     }
 }
