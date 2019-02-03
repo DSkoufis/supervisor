@@ -51,7 +51,7 @@ public class JoinListTag extends SimpleTagSupport {
 
     private String getTrimmedBody() throws IOException, JspException {
         getJspBody().invoke(sw);
-        return sw.toString().replaceAll("[\r\n\t]*", "").trim();
+        return sw.toString().trim();
     }
 
     private void printOut(String out) throws IOException {
