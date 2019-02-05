@@ -26,11 +26,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product saveProduct(ProductSaveCommand cmd) {
         Product product = new Product(cmd.getName());
-        product.addVendors(cmd.getVendors());
 
         try {
             return productRepository.save(product);
-        } catch (javax.validation.ConstraintViolationException | org.hibernate.exception.ConstraintViolationException ex) {
+        } catch (javax.validation.ConstraintViolationException | org.springframework.dao.DataIntegrityViolationException ex) {
             return null;
         }
     }

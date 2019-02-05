@@ -1,27 +1,17 @@
 package com.supervisor.command;
 
-import com.supervisor.domain.product.Vendor;
-
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.NotBlank;
 
 public class ProductSaveCommand {
 
+    @NotBlank(message = "{command.ProductSaveCommand.name.notBlank}")
     private String name;
-    private List<Vendor> vendors;
 
     public ProductSaveCommand() {
-        this.vendors = new ArrayList<Vendor>();
     }
 
     public ProductSaveCommand(String name) {
-        this();
         this.name = name;
-    }
-
-    public ProductSaveCommand(String name, List<Vendor> vendors) {
-        this(name);
-        this.vendors = vendors;
     }
 
     public String getName() {
@@ -30,13 +20,5 @@ public class ProductSaveCommand {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Vendor> getVendors() {
-        return vendors;
-    }
-
-    public void setVendors(List<Vendor> vendors) {
-        this.vendors = vendors;
     }
 }

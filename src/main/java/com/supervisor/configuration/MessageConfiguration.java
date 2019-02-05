@@ -5,15 +5,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import static com.supervisor.util.constant.ViewMapping.I18N_PATH;
 
 @Configuration
-public class MessageConfiguration implements WebMvcConfigurer {
+public class MessageConfiguration {
 
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:messages");
+        messageSource.setBasename("classpath:" + I18N_PATH + "/messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }

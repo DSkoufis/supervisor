@@ -48,19 +48,4 @@ public class MajorVersion extends Version<MajorVersion> {
         this.minorVersions.add(minorVersion);
         if (minorVersion.getMajorVersion() != this) minorVersion.setMajorVersion(this);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MajorVersion)) return false;
-        MajorVersion version = (MajorVersion) o;
-        return super.equals(version) &&
-                product.equals(version.product) &&
-                minorVersions.equals(version.minorVersions);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode() + Objects.hash(product, minorVersions);
-    }
 }

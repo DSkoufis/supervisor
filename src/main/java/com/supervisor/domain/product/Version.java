@@ -100,20 +100,4 @@ public abstract class Version<T extends Version> implements VersionCommonInfo {
         this.updates.add(update);
         if (update.getPrecedent() != this) update.setPrecedent(this);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Version)) return false;
-        Version<?> version = (Version<?>) o;
-        return id.equals(version.id) &&
-                productInfo.equals(version.productInfo) &&
-                Objects.equals(precedent, version.precedent) &&
-                Objects.equals(updates, version.updates);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, productInfo, precedent, updates);
-    }
 }

@@ -9,4 +9,6 @@ public final class ViewMapping {
     public static final String STATIC_LIBRARIES_ROOT = "/libraries";
     public static final String STATIC_JS_ROOT = "/js";
     public static final String STATIC_CSS_ROOT = "/css";
+
+    public static final String I18N_PATH = "/i18n";
 }

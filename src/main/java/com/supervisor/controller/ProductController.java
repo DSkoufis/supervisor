@@ -5,12 +5,14 @@ import com.supervisor.domain.product.Product;
 import com.supervisor.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.supervisor.util.constant.ControllerMapping.PRODUCT_CONTROLLER_ROOT;
@@ -35,9 +37,16 @@ public class ProductController {
         return model;
     }
 
-    @PostMapping(value = "save")
-    public void createProduct(@RequestBody ProductSaveCommand cmd) {
-        // TODO Could this return the product? think so
-        productService.saveProduct(cmd);
+    @GetMapping(value = "/create")
+    public ModelAndView createProduct() {
+        return new ModelAndView(PRODUCT_VIEW_PATH + "createProduct", "product", new Product());
+    }
+
+    @PostMapping(value = "/save")
+    public Product createProduct(@Valid ProductSaveCommand cmd, BindingResult result) {
+        if (result.hasErrors()) {
+            System.out.println("Test");
+        }
+        return productService.saveProduct(cmd);
     }
 }

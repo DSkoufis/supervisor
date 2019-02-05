@@ -31,17 +31,4 @@ public class MinorVersion extends Version<MinorVersion> {
         this.majorVersion = majorVersion;
         if (!majorVersion.getMinorVersions().contains(this)) majorVersion.addMinorVersion(this);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MinorVersion)) return false;
-        MinorVersion that = (MinorVersion) o;
-        return super.equals(that) && majorVersion.equals(that.majorVersion);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode() + Objects.hash(majorVersion);
-    }
 }
