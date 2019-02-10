@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
@@ -16,7 +15,6 @@ import static com.supervisor.util.constant.ViewMapping.STATIC_LIBRARIES_ROOT;
 import static com.supervisor.util.constant.ViewMapping.STATIC_RESOURCES_PATH;
 import static com.supervisor.util.constant.ViewMapping.VIEWS_ROOT_PATH;
 
-@EnableWebMvc
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
 

@@ -1,11 +1,13 @@
 <%@ tag description="Core Page Template" import="com.supervisor.util.constant.ViewMapping" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="custom" tagdir="/WEB-INF/tags" %>
 
 <%@ attribute name="header" fragment="true" required="false" %>
+<%@ attribute name="footer" fragment="true" required="false" %>
 <%@ attribute name="jsImports" fragment="true" required="false" %>
 
-<c:set var="libraries" value="${ViewMapping.STATIC_LIBRARIES_ROOT}" />
+<c:set var="libraries" value="${ViewMapping.STATIC_LIBRARIES_ROOT}"/>
 
 <!DOCTYPE html>
 
@@ -20,7 +22,13 @@
 </head>
 <body>
 
-<jsp:doBody/>
+<custom:navbar/>
+
+<div class="container">
+    <jsp:doBody/>
+
+    <jsp:invoke fragment="footer"/>
+</div>
 
 <script src="${libraries}/jquery-3.3.1/jquery-3.3.1.min.js"></script>
 <script src="${libraries}/popper.js-1.0/popper.min.js"></script>

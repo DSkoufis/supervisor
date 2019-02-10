@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,11 +34,6 @@ public class ProductController {
         List<Product> products = productService.getAllProducts();
         model.addObject("products", products);
         return model;
-    }
-
-    @GetMapping(value = "/create")
-    public ModelAndView createProduct() {
-        return new ModelAndView(PRODUCT_VIEW_PATH + "createProduct", "product", new Product());
     }
 
     @PostMapping(value = "/save")
