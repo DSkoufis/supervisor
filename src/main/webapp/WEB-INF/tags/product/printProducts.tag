@@ -20,9 +20,9 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${products}" var="product" varStatus="loopProps">
+    <c:forEach items="${products}" var="product" varStatus="loopInfo">
         <tr>
-            <th scope="row"><c:out value="${loopProps.index + 1}"/></th>
+            <th scope="row"><c:out value="${loopInfo.count}"/></th>
             <td><c:out value="${product.name}"/></td>
             <td><visor:joinList list="${product.vendors}" delimiter=", " var="vendor">
                 ${vendor.name}

@@ -24,7 +24,7 @@
 
 <custom:navbar/>
 
-<div class="container">
+<div class="container pt-2">
     <jsp:doBody/>
 
     <jsp:invoke fragment="footer"/>

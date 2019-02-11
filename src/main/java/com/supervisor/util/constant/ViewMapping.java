@@ -3,6 +3,7 @@ package com.supervisor.util.constant;
 public final class ViewMapping {
     public static final String PRODUCT_VIEW_PATH = "product/";
 
+    public static final String RESOURCES_ROOT_PATH = "/WEB-INF";
     public static final String VIEWS_ROOT_PATH = "/views";
 
     public static final String STATIC_RESOURCES_PATH = "/resources";
