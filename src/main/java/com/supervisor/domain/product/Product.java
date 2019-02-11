@@ -11,14 +11,17 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.supervisor.util.constant.UniqueKeyConstraintMapper.UNIQUE_PRODUCT_NAME;
+
 @Entity
-@Table(name = "product")
+@Table(name = "product", uniqueConstraints = @UniqueConstraint(name = UNIQUE_PRODUCT_NAME, columnNames = {"name"}))
 public class Product {
 
     @Id
@@ -26,7 +29,7 @@ public class Product {
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "{product.Product.name.notBlank}")
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 

@@ -1,5 +1,6 @@
 package com.supervisor.controller;
 
+import com.supervisor.bean.DataIntegrityViolationExceptionTranslator;
 import com.supervisor.command.ProductSaveCommand;
 import com.supervisor.domain.product.Product;
 import com.supervisor.service.ProductService;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,10 +24,12 @@ import static com.supervisor.util.constant.ViewMapping.PRODUCT_VIEW_PATH;
 public class ProductController {
 
     private final ProductService productService;
+    private final DataIntegrityViolationExceptionTranslator exceptionTranslator;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, DataIntegrityViolationExceptionTranslator exceptionTranslator) {
         this.productService = productService;
+        this.exceptionTranslator = exceptionTranslator;
     }
 
     @GetMapping(value = {"", "/"})
@@ -37,10 +41,18 @@ public class ProductController {
     }
 
     @PostMapping(value = "/save")
-    public Product createProduct(@Valid ProductSaveCommand cmd, BindingResult result) {
+    public Product createProduct(@Valid @ModelAttribute("command") ProductSaveCommand cmd, BindingResult result) {
         if (result.hasErrors()) {
             System.out.println("Test");
         }
-        return productService.saveProduct(cmd);
+
+        try {
+            return productService.saveProduct(cmd);
+        } catch (javax.validation.ConstraintViolationException ex) {
+            ex.getConstraintViolations().forEach(constraintViolation -> System.out.println(constraintViolation.getMessage()));
+        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            exceptionTranslator.getCode(ex);
+        }
+        return null;
     }
 }

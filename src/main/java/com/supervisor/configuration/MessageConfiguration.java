@@ -7,6 +7,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import static com.supervisor.util.constant.ViewMapping.I18N_PATH;
+import static com.supervisor.util.constant.ViewMapping.RESOURCES_ROOT_PATH;
 
 @Configuration
 public class MessageConfiguration {
@@ -14,7 +15,7 @@ public class MessageConfiguration {
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:" + I18N_PATH + "/messages");
+        messageSource.setBasename(RESOURCES_ROOT_PATH + I18N_PATH + "/messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }

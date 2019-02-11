@@ -4,7 +4,7 @@ import javax.validation.constraints.NotBlank;
 
 public class ProductSaveCommand {
 
-    @NotBlank(message = "{command.ProductSaveCommand.name.notBlank}")
+    @NotBlank(message = "{product.Product.name.notBlank}")
     private String name;
 
     public ProductSaveCommand() {
