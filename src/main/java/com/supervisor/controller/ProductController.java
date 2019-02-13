@@ -3,14 +3,12 @@ package com.supervisor.controller;
 import com.supervisor.command.ProductSaveCommand;
 import com.supervisor.domain.product.Product;
 import com.supervisor.service.ProductService;
-import org.hibernate.validator.internal.engine.path.PathImpl;
+import com.supervisor.util.ValidationError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,27 +44,20 @@ public class ProductController {
     @PostMapping(value = "/save")
     public ResponseEntity createProduct(@Valid @ModelAttribute("command") ProductSaveCommand cmd, BindingResult result) {
 
-        // Return the errors
         if (result.hasErrors()) {
-            List<Map<String, String>> errors = new ArrayList<>();
-            for (ObjectError error : result.getAllErrors()) {
-                Map<String, String> errorMap = new HashMap<>();
-                errorMap.put("field", ((FieldError) error).getField());
-                errorMap.put("message", error.getDefaultMessage());
-                errorMap.put("code", "");
-                errors.add(errorMap);
-            }
-            //return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+            List<Map<String, String>> errors = ValidationError.from(result.getAllErrors());
+            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         }
 
+        List<Map<String, String>> errors;
         try {
             productService.saveProduct(cmd);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (javax.validation.ConstraintViolationException ex) {
-            ex.getConstraintViolations().forEach(constraintViolation ->
-                    System.out.println(((PathImpl)constraintViolation.getPropertyPath()).getLeafNode().asString()));
+            errors = ValidationError.from(ex);
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            errors = ValidationError.from("name", "product.Product.name.unique", "product.Product.name.unique");
         }
-        return null;
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 }

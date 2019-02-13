@@ -45,15 +45,15 @@
         window.addEventListener('load', function () {
             let form = document.getElementById("createProductForm");
             form.addEventListener('submit', function (event) {
+                event.preventDefault();
 
-                /*if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    form.classList.add('was-validated');
+                if (form.checkValidity() === false) {
                     event.stopPropagation();
+                    form.classList.add('was-validated');
                     return false;
                 } else {
                     form.classList.remove('was-validated');
-                }*/
+                }
             });
         });
     })();

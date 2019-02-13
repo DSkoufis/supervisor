@@ -12,7 +12,7 @@ import static com.supervisor.util.constant.ViewMapping.RESOURCES_ROOT_PATH;
 @Configuration
 public class MessageConfiguration {
 
-    @Bean
+    @Bean(name = "messageSource")
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename(RESOURCES_ROOT_PATH + I18N_PATH + "/messages");
