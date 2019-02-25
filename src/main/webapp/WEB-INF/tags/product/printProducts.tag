@@ -10,27 +10,16 @@
 <jsp:useBean id="vendor" class="com.supervisor.domain.product.Vendor"/>
 <jsp:useBean id="version" class="com.supervisor.domain.product.MajorVersion"/>
 
-<table class="table table-striped table-bordered">
-    <thead class="thead-light">
+
+<c:forEach items="${products}" var="product" varStatus="loopInfo">
     <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Vendors</th>
-        <th scope="col">Versions</th>
+        <th scope="row"><c:out value="${loopInfo.count}"/></th>
+        <td><c:out value="${product.name}"/></td>
+        <td><visor:joinList list="${product.vendors}" delimiter=", " var="vendor">
+            ${vendor.name}
+        </visor:joinList></td>
+        <td><visor:joinList list="${product.versions}" delimiter=", " var="version">
+            ${version.version}
+        </visor:joinList></td>
     </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${products}" var="product" varStatus="loopInfo">
-        <tr>
-            <th scope="row"><c:out value="${loopInfo.count}"/></th>
-            <td><c:out value="${product.name}"/></td>
-            <td><visor:joinList list="${product.vendors}" delimiter=", " var="vendor">
-                ${vendor.name}
-            </visor:joinList></td>
-            <td><visor:joinList list="${product.versions}" delimiter=", " var="version">
-                ${version.version}
-            </visor:joinList></td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
+</c:forEach>

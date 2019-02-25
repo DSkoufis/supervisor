@@ -1,10 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" import="com.supervisor.util.constant.ViewMapping" %>
 
 <%@ taglib prefix="tt" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="product" tagdir="/WEB-INF/tags/product" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <c:set var="modalId" value="createProductModal"/>
+<c:set var="productViewsPath" value="${ViewMapping.PRODUCT_VIEW_PATH_FULL}"/>
 
 <tt:main>
     <jsp:attribute name="header">
@@ -26,7 +27,9 @@
         </div>
         <hr>
         <div class="container">
-            <product:printProducts products="${products}"/>
+            <c:import url="${productViewsPath}_productsTable.jsp">
+                <c:param name="products" value="${products}"/>
+            </c:import>
         </div>
 
         <product:createProductModal modalId="${modalId}"/>
