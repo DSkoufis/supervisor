@@ -35,7 +35,7 @@ public class ProductController {
 
     @GetMapping(value = {"", "/"})
     public ModelAndView index() {
-        ModelAndView model = new ModelAndView(PRODUCT_VIEW_PATH + "productList");
+        ModelAndView model = new ModelAndView(PRODUCT_VIEW_PATH + "productsPage");
         List<Product> products = productService.getAllProducts();
         model.addObject("products", products);
         return model;

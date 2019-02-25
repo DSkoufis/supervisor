@@ -16,7 +16,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="${libraries}/bootstrap-4.2.1/bootstrap.min.css">
+    <custom:staticLibrary library="/bootstrap-4.2.1/bootstrap.min.css" isCss="${true}"/>
 
     <jsp:invoke fragment="header"/>
 </head>
@@ -30,9 +30,10 @@
     <jsp:invoke fragment="footer"/>
 </div>
 
-<script src="${libraries}/jquery-3.3.1/jquery-3.3.1.min.js"></script>
-<script src="${libraries}/popper.js-1.0/popper.min.js"></script>
-<script src="${libraries}/bootstrap-4.2.1/bootstrap.min.js"></script>
+<custom:staticLibrary library="/jquery-3.3.1/jquery-3.3.1.min.js"/>
+<custom:staticLibrary library="/popper.js-1.0/popper.min.js"/>
+<custom:staticLibrary library="/bootstrap-4.2.1/bootstrap.min.js"/>
+
 <jsp:invoke fragment="jsImports"/>
 </body>
 </html>

@@ -9,12 +9,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import static com.supervisor.util.constant.ViewMapping.RESOURCES_ROOT_PATH;
+import static com.supervisor.util.constant.ViewMapping.VIEWS_PATH_FULL;
 import static com.supervisor.util.constant.ViewMapping.STATIC_CSS_ROOT;
 import static com.supervisor.util.constant.ViewMapping.STATIC_JS_ROOT;
 import static com.supervisor.util.constant.ViewMapping.STATIC_LIBRARIES_ROOT;
 import static com.supervisor.util.constant.ViewMapping.STATIC_RESOURCES_PATH;
-import static com.supervisor.util.constant.ViewMapping.VIEWS_ROOT_PATH;
 
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
@@ -22,7 +21,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
     @Bean
     public ViewResolver jspViewResolver() {
         InternalResourceViewResolver bean = new InternalResourceViewResolver();
-        bean.setPrefix(RESOURCES_ROOT_PATH + VIEWS_ROOT_PATH + "/");
+        bean.setPrefix(VIEWS_PATH_FULL + "/");
         bean.setSuffix(".jsp");
         return bean;
     }
