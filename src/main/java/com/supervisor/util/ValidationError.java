@@ -1,14 +1,20 @@
 package com.supervisor.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supervisor.configuration.SpringApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,11 +27,24 @@ public class ValidationError {
 
     private static final ValidationError staticAccessor = new ValidationError();
 
+    private List<Map<String, String>> errors = new ArrayList<>();
+
     private ValidationError() {
         this.messageSource = SpringApplicationContext.getBean(MessageSource.class);
     }
 
-    public static List<Map<String, String>> from(List<ObjectError> errors) {
+    public String build(HttpServletResponse httpResponse) {
+        try {
+            httpResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            String data = new ObjectMapper().writeValueAsString(errors);
+            httpResponse.getWriter().print(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static ValidationError from(List<ObjectError> errors) {
         List<Map<String, String>> errorsList = new ArrayList<>();
         for (ObjectError error : errors) {
             String field = ((FieldError) error).getField();
@@ -33,14 +52,14 @@ public class ValidationError {
             errorsList.add(getFields(field, message, ""));
         }
 
-        return errorsList;
+        return ValidationError.buildValidationErrorFromErrors(errorsList);
     }
 
-    public static List<Map<String, String>> from(BindingResult bind) {
+    public static ValidationError from(BindingResult bind) {
         return from(bind.getAllErrors());
     }
 
-    public static List<Map<String, String>> from(Set<ConstraintViolation<?>> violations) {
+    public static ValidationError from(Set<ConstraintViolation<?>> violations) {
         List<Map<String, String>> errors = new ArrayList<>();
         for (ConstraintViolation<?> violation : violations) {
             String field = violation.getPropertyPath().toString();
@@ -49,16 +68,18 @@ public class ValidationError {
             Object[] args = new Object[]{violation.getInvalidValue()};
             errors.add(getFields(field, message, code, args));
         }
-        return errors;
+
+        return ValidationError.buildValidationErrorFromErrors(errors);
     }
 
-    public static List<Map<String, String>> from(String field, String message, String code) {
+    public static ValidationError from(String field, String message, String code) {
         List<Map<String, String>> errors = new ArrayList<>();
         errors.add(getFields(field, message, code));
-        return errors;
+
+        return ValidationError.buildValidationErrorFromErrors(errors);
     }
 
-    public static List<Map<String, String>> from(ConstraintViolationException exception) {
+    public static ValidationError from(ConstraintViolationException exception) {
         return from(exception.getConstraintViolations());
     }
 
@@ -79,6 +100,16 @@ public class ValidationError {
         }
         errorMap.put("code", code);
         return errorMap;
+    }
+
+    private void addErrors(List<Map<String, String>> errors) {
+        this.errors.addAll(errors);
+    }
+
+    private static ValidationError buildValidationErrorFromErrors(List<Map<String, String>> errors) {
+        ValidationError response = new ValidationError();
+        response.addErrors(errors);
+        return response;
     }
 
     private String getMessageFromCode(String code, Object[] args) {

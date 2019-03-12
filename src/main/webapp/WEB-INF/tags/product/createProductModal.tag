@@ -3,6 +3,7 @@
 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@ attribute name="modalId" required="true" type="java.lang.String"
               rtexprvalue="true" description="The ID that's going to be used as the modal ID" %>
@@ -33,7 +34,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -53,8 +53,17 @@
                     return false;
                 } else {
                     form.classList.remove('was-validated');
+                    createProduct();
                 }
             });
         });
+
+        function createProduct() {
+            var form = $("#createProductForm");
+            var data = form.serializeArray();
+            var url = form.attr("action");
+
+            $.post(url);
+        }
     })();
 </script>
