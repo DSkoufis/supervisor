@@ -32,4 +32,40 @@
             <required>true</required>
         </attribute>
     </tag>
+    <tag>
+        <description>Performs a reverse URL lookup on the request mappings</description>
+        <name>reverseUrl</name>
+        <tag-class>com.supervisor.util.tag.RequestMappingLookupTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <description>The controller class that will be used (of type Class)</description>
+            <name>controller</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>The action name that is going to be called</description>
+            <name>action</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>The param that's going to be used as an ID in the URL</description>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>A map that's going to be added as URL params (should be escaped)</description>
+            <name>params</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>A Map of arguments that are going to replace the URL patterns</description>
+            <name>args</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>

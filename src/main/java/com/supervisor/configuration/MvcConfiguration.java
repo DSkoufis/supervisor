@@ -6,8 +6,11 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+import java.util.Map;
 
 import static com.supervisor.util.constant.ViewMapping.VIEWS_PATH_FULL;
 import static com.supervisor.util.constant.ViewMapping.STATIC_CSS_ROOT;

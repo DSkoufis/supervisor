@@ -1,13 +1,12 @@
 package com.supervisor.util.tag;
 
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class JoinListTag extends SimpleTagSupport {
+public class JoinListTag extends CustomAbstractTag {
 
     private StringWriter sw = new StringWriter();
 
@@ -52,10 +51,6 @@ public class JoinListTag extends SimpleTagSupport {
     private String getTrimmedBody() throws IOException, JspException {
         getJspBody().invoke(sw);
         return sw.toString().trim();
-    }
-
-    private void printOut(String out) throws IOException {
-        getJspContext().getOut().print(out);
     }
 
     private void prepareForNextIteration() {

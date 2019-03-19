@@ -1,9 +1,9 @@
-<%@ tag description="Returns the create products modal" body-content="empty" isELIgnored="false"
-        pageEncoding="UTF-8" import="com.supervisor.util.constant.ControllerMapping" %>
+<%@ tag description="Returns the create products modal" body-content="empty" isELIgnored="false" pageEncoding="UTF-8" %>
 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="visor" uri="http://www.supervisor.com/tags/core" %>
 
 <%@ attribute name="modalId" required="true" type="java.lang.String"
               rtexprvalue="true" description="The ID that's going to be used as the modal ID" %>
@@ -19,9 +19,10 @@
                 </button>
             </div>
             <div class="modal-body">
+                <jsp:useBean id="productController" class="com.supervisor.controller.ProductController"/>
+                <c:set var="productSave"><visor:reverseUrl controller="${productController['class']}" action="createProduct"/></c:set>
                 <jsp:useBean id="command" scope="request" class="com.supervisor.command.ProductSaveCommand"/>
-                <form:form method="POST" action="${ControllerMapping.PRODUCT_CONTROLLER_ROOT}/save"
-                           id="createProductForm" novalidate="true">
+                <form:form method="POST" action="${productSave}" id="createProductForm" novalidate="true">
                     <div class="form-group">
                         <form:label path="name">Name</form:label>
                         <form:input path="name" placeholder="Product name" cssClass="form-control" required="true"/>

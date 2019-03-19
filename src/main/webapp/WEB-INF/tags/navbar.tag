@@ -1,6 +1,7 @@
-<%@ tag description="Main Navigation bar" import="com.supervisor.util.constant.ControllerMapping" %>
+<%@ tag description="Main Navigation bar" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="visor" uri="http://www.supervisor.com/tags/core" %>
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="navbar-header pr-4 pl-2">
@@ -17,7 +18,8 @@
                 <a class="nav-link" href="<c:url value="/" />">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value="${ControllerMapping.PRODUCT_CONTROLLER_ROOT}" />">Products</a>
+                <jsp:useBean id="productController" class="com.supervisor.controller.ProductController"/>
+                <a class="nav-link" href="<visor:reverseUrl controller="${productController['class']}" action="index"/>">Products</a>
             </li>
 
             <%--<li class="nav-item dropdown">

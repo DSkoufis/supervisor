@@ -17,14 +17,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
-import static com.supervisor.util.constant.ControllerMapping.PRODUCT_CONTROLLER_ROOT;
 import static com.supervisor.util.constant.ViewMapping.PRODUCT_VIEW_PATH;
 
 @Controller
-@RequestMapping(value = PRODUCT_CONTROLLER_ROOT)
+@RequestMapping(value = "/product")
 public class ProductController {
 
-    private final ProductService productService;
+    private ProductService productService;
+
+    public ProductController() {}
 
     @Autowired
     public ProductController(ProductService productService) {
@@ -49,7 +50,7 @@ public class ProductController {
         ValidationError validationError;
         try {
             productService.saveProduct(cmd);
-            return "redirect:" + PRODUCT_CONTROLLER_ROOT + "/";
+            return "redirect:/product";
         } catch (javax.validation.ConstraintViolationException ex) {
             validationError = ValidationError.from(ex);
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
