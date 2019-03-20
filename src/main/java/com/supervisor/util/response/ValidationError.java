@@ -1,6 +1,5 @@
-package com.supervisor.util;
+package com.supervisor.util.response;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supervisor.configuration.SpringApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -8,17 +7,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class ValidationError {
+class ValidationError implements ActionResultAware<Map<String, String>> {
 
     private final MessageSource messageSource;
 
@@ -28,17 +25,6 @@ public class ValidationError {
 
     private ValidationError() {
         this.messageSource = SpringApplicationContext.getBean(MessageSource.class);
-    }
-
-    public String build(HttpServletResponse httpResponse) {
-        try {
-            httpResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            String data = new ObjectMapper().writeValueAsString(errors);
-            httpResponse.getWriter().print(data);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public static ValidationError from(List<ObjectError> errors) {
@@ -115,5 +101,20 @@ public class ValidationError {
 
     private String getMessageFromCode(String code, String defaultMessage, Object[] args) {
         return messageSource.getMessage(code, args, defaultMessage, LocaleContextHolder.getLocale());
+    }
+
+    @Override
+    public List<Map<String, String>> getResults() {
+        return this.errors;
+    }
+
+    @Override
+    public boolean isError() {
+        return !isSuccess();
+    }
+
+    @Override
+    public boolean isSuccess() {
+        return this.errors.isEmpty();
     }
 }

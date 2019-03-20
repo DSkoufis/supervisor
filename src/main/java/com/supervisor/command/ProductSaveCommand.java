@@ -19,6 +19,9 @@ public class ProductSaveCommand {
     }
 
     public void setName(String name) {
+        if (name != null) {
+            name = name.trim();
+        }
         this.name = name;
     }
 }

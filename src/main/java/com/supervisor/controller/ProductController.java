@@ -3,14 +3,17 @@ package com.supervisor.controller;
 import com.supervisor.command.ProductSaveCommand;
 import com.supervisor.domain.product.Product;
 import com.supervisor.service.ProductService;
-import com.supervisor.util.ValidationError;
+import com.supervisor.util.response.ProductCreationResponse;
+import com.supervisor.util.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
@@ -40,22 +43,23 @@ public class ProductController {
         return model;
     }
 
-    @PostMapping(value = "/save")
-    public String createProduct(@Valid @ModelAttribute("command") ProductSaveCommand cmd, BindingResult result,
+    @ResponseBody
+    @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response createProduct(@Valid @ModelAttribute("command") ProductSaveCommand cmd, BindingResult result,
                                 HttpServletResponse httpServletResponse) {
         if (result.hasErrors()) {
-            return ValidationError.from(result.getAllErrors()).build(httpServletResponse);
+            return ProductCreationResponse.from(result.getAllErrors()).build(httpServletResponse);
         }
 
-        ValidationError validationError;
+        ProductCreationResponse response;
         try {
-            productService.saveProduct(cmd);
-            return "redirect:/product";
+            Product product = productService.saveProduct(cmd);
+            return ProductCreationResponse.from(product).build(httpServletResponse);
         } catch (javax.validation.ConstraintViolationException ex) {
-            validationError = ValidationError.from(ex);
+            response = ProductCreationResponse.from(ex);
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
-            validationError = ValidationError.from("name", "product.Product.name.unique", "product.Product.name.unique");
+            response = ProductCreationResponse.from("name", "product.Product.name.unique", "product.Product.name.unique");
         }
-        return validationError.build(httpServletResponse);
+        return response.build(httpServletResponse);
     }
 }
