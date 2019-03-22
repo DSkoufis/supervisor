@@ -1,9 +1,9 @@
 package com.supervisor.util.response;
 
 import com.supervisor.domain.product.Product;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class ProductCreationResponse extends Response {
     }
 
     @Override
-    public int getHttpStatusCode() {
-        return result.isError() ? HttpServletResponse.SC_BAD_REQUEST : HttpServletResponse.SC_OK;
+    public HttpStatus getHttpStatus() {
+        return result.isError() ? HttpStatus.BAD_REQUEST : HttpStatus.OK;
     }
 }

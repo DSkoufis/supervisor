@@ -1,8 +1,9 @@
 package com.supervisor.util.response;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -11,10 +12,10 @@ import java.util.Map;
 public abstract class Response {
     ActionResultAware result;
 
-    abstract int getHttpStatusCode();
+    abstract HttpStatus getHttpStatus();
 
     private void setHttpStatus(HttpServletResponse servletResponse) {
-        servletResponse.setStatus(this.getHttpStatusCode());
+        servletResponse.setStatus(this.getHttpStatus().value());
     }
 
     public Response build(HttpServletResponse response) {
@@ -23,15 +24,17 @@ public abstract class Response {
     }
 
     @JsonValue
-    public String toJson() throws JsonProcessingException {
+    public ObjectNode toJson() {
         Map results = getCommonJsonElements();
         results.put("results", result.getResults());
-        return new ObjectMapper().writeValueAsString(results);
+        return new ObjectMapper().valueToTree(results);
     }
 
     private Map getCommonJsonElements() {
         Map commonElements = new HashMap<>();
-        commonElements.put("status", getHttpStatusCode());
+        HttpStatus status = getHttpStatus();
+        commonElements.put("status", status.value());
+        commonElements.put("status_description", status.name());
         return commonElements;
     }
 }
