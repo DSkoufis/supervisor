@@ -12,6 +12,10 @@
         <title>Products - List</title>
     </jsp:attribute>
 
+    <jsp:attribute name="customImports">
+        <tt:customLibrary fileName="/ajaxHelper.js" />
+    </jsp:attribute>
+
     <jsp:body>
         <jsp:useBean id="products" scope="request" type="java.util.List"/>
 

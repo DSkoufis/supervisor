@@ -41,6 +41,7 @@
 </div>
 
 <script>
+    SUP = SUP || {};
     (function () {
         'use strict';
         window.addEventListener('load', function () {
@@ -60,11 +61,21 @@
         });
 
         function createProduct() {
-            var form = $("#createProductForm");
-            var data = form.serializeArray();
-            var url = form.attr("action");
+            let form = $("#createProductForm");
+            let data = form.serializeArray();
+            let url = form.attr("action");
 
-            $.post(url);
+            $.post({
+                "url": url,
+                "data": data,
+                "dataType": "application/json"
+            }).done(function (response) {
+                response = SUP.ajaxHelper.extractRequest(response);
+                console.log(response);
+            }).fail(function (response) {
+                response = SUP.ajaxHelper.extractRequest(response);
+                console.log(response);
+            });
         }
     })();
 </script>
