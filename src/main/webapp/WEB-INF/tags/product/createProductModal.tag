@@ -70,10 +70,10 @@
                 "data": data,
                 "dataType": "application/json"
             }).done(function (response) {
-                response = SUP.ajaxHelper.extractRequest(response);
+                response = SUP.ajaxHelper.extractJson(response);
                 console.log(response);
             }).fail(function (response) {
-                response = SUP.ajaxHelper.extractRequest(response);
+                response = SUP.ajaxHelper.extractJson(response);
                 console.log(response);
             });
         }

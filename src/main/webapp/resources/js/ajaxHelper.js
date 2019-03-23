@@ -1,10 +1,12 @@
 SUP = SUP || {};
 
 SUP.ajaxHelper = (function () {
-    let extractFromRequest = function (jqxhr) {
+    let extractJsonResponse = function (jqxhr) {
+        let responseText = jqxhr.responseText;
         return {
             originalRequest: jqxhr,
-            responseText: jqxhr.responseText,
+            responseText: responseText,
+            response: JSON.parse(responseText),
             status: jqxhr.status,
             getHeader: jqxhr.statusCode().getResponseHeader,
             statusText: jqxhr.statusText
@@ -12,6 +14,6 @@ SUP.ajaxHelper = (function () {
     };
 
     return {
-        extractRequest: extractFromRequest
+        extractJson: extractJsonResponse
     };
 })();
