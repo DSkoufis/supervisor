@@ -15,13 +15,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <custom:staticLibrary library="/bootstrap-4.2.1/bootstrap.min.css" isCss="${true}"/>
+	<custom:staticLibrary library="/jquery-3.3.1/jquery-3.3.1.min.js"/>
 
     <jsp:invoke fragment="header"/>
+
+	<script>SUP = null;</script>
 </head>
 <body>
-<script>
-    SUP = null;
-</script>
 
 <custom:navbar/>
 
@@ -31,7 +31,6 @@
     <jsp:invoke fragment="footer"/>
 </div>
 
-<custom:staticLibrary library="/jquery-3.3.1/jquery-3.3.1.min.js"/>
 <custom:staticLibrary library="/popper.js-1.0/popper.min.js"/>
 <custom:staticLibrary library="/bootstrap-4.2.1/bootstrap.min.js"/>
 

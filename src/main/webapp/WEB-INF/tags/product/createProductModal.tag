@@ -42,7 +42,7 @@
 
 <script>
     SUP = SUP || {};
-    (function () {
+    $(function () {
         'use strict';
         window.addEventListener('load', function () {
             let form = document.getElementById("createProductForm");
@@ -77,5 +77,5 @@
                 console.log(response);
             });
         }
-    })();
+    });
 </script>
