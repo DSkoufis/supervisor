@@ -118,7 +118,7 @@ class ValidationError implements ActionResultAware<ValidationError.Result> {
         }
 
         @JsonProperty("field")
-        String getField() { return this.field; }
+        public String getField() { return this.field; }
 
         @JsonProperty("code")
         public String getCode() { return code; }
