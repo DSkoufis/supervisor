@@ -1,38 +1,37 @@
 package com.supervisor.util.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.supervisor.configuration.SpringApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-class ValidationError implements ActionResultAware<Map<String, String>> {
-
-    private final MessageSource messageSource;
+class ValidationError implements ActionResultAware<ValidationError.Result> {
 
     private static final ValidationError staticAccessor = new ValidationError();
 
-    private List<Map<String, String>> errors = new ArrayList<>();
+    private final MessageSource messageSource;
+    private List<Result> errors = new ArrayList<>();
 
     private ValidationError() {
         this.messageSource = SpringApplicationContext.getBean(MessageSource.class);
     }
 
     public static ValidationError from(List<ObjectError> errors) {
-        List<Map<String, String>> errorsList = new ArrayList<>();
+        List<Result> errorsList = new ArrayList<>();
         for (ObjectError error : errors) {
             String field = ((FieldError) error).getField();
             String message = error.getDefaultMessage();
-            errorsList.add(getFields(field, message, ""));
+            errorsList.add(getFields(field, message, "", null));
         }
 
         return ValidationError.buildValidationErrorFromErrors(errorsList);
@@ -43,7 +42,7 @@ class ValidationError implements ActionResultAware<Map<String, String>> {
     }
 
     public static ValidationError from(Set<ConstraintViolation<?>> violations) {
-        List<Map<String, String>> errors = new ArrayList<>();
+        List<Result> errors = new ArrayList<>();
         for (ConstraintViolation<?> violation : violations) {
             String field = violation.getPropertyPath().toString();
             String message = violation.getMessage();
@@ -56,8 +55,8 @@ class ValidationError implements ActionResultAware<Map<String, String>> {
     }
 
     public static ValidationError from(String field, String message, String code) {
-        List<Map<String, String>> errors = new ArrayList<>();
-        errors.add(getFields(field, message, code));
+        List<Result> errors = new ArrayList<>();
+        errors.add(getFields(field, message, code, null));
 
         return ValidationError.buildValidationErrorFromErrors(errors);
     }
@@ -66,30 +65,20 @@ class ValidationError implements ActionResultAware<Map<String, String>> {
         return from(exception.getConstraintViolations());
     }
 
-    private static Map<String, String> getFields(String field, String message, String code) {
-        return getFields(field, message, code, null);
-    }
-
-    private static Map<String, String> getFields(String field, String message, String code, Object[] args) {
-        Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("field", field);
-
+    private static Result getFields(String field, String message, String code, Object[] args) {
         if (message == null) {
-            errorMap.put("message", staticAccessor.getMessageFromCode(code, args));
-        } else if (!message.equals(code)) {
-            errorMap.put("message", message);
-        } else {
-            errorMap.put("message", staticAccessor.getMessageFromCode(code, message, args));
+            message = staticAccessor.getMessageFromCode(code, args);
+        } else if (message.equals(code)) {
+            message = staticAccessor.getMessageFromCode(code, message, args);
         }
-        errorMap.put("code", code);
-        return errorMap;
+        return new Result(field, code, message);
     }
 
-    private void addErrors(List<Map<String, String>> errors) {
+    private void addErrors(List<Result> errors) {
         this.errors.addAll(errors);
     }
 
-    private static ValidationError buildValidationErrorFromErrors(List<Map<String, String>> errors) {
+    private static ValidationError buildValidationErrorFromErrors(List<Result> errors) {
         ValidationError response = new ValidationError();
         response.addErrors(errors);
         return response;
@@ -104,17 +93,37 @@ class ValidationError implements ActionResultAware<Map<String, String>> {
     }
 
     @Override
-    public List<Map<String, String>> getResults() {
-        return this.errors;
+    public List<Result> getResults() { return this.errors; }
+
+    @Override
+    public void addModelAttributes(ModelAndView model) {
+        model.addObject("validationErrors", errors);
     }
 
     @Override
-    public boolean isError() {
-        return !isSuccess();
-    }
+    public boolean isError() { return !isSuccess(); }
 
     @Override
-    public boolean isSuccess() {
-        return this.errors.isEmpty();
+    public boolean isSuccess() { return this.errors.isEmpty(); }
+
+    static class Result {
+        private String field;
+        private String code;
+        private String message;
+
+        private Result(String field, String code, String message) {
+            this.field = field;
+            this.code = code;
+            this.message = message;
+        }
+
+        @JsonProperty("field")
+        String getField() { return this.field; }
+
+        @JsonProperty("code")
+        public String getCode() { return code; }
+
+        @JsonProperty("message")
+        public String getMessage() { return message; }
     }
 }

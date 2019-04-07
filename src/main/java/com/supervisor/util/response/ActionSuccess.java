@@ -1,5 +1,7 @@
 package com.supervisor.util.response;
 
+import org.springframework.web.servlet.ModelAndView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,11 @@ public class ActionSuccess<T> implements ActionResultAware<T> {
         List<T> resultsList = new ArrayList<>();
         resultsList.add(object);
         return resultsList;
+    }
+
+    @Override
+    public void addModelAttributes(ModelAndView model) {
+        model.addObject("results", object);
     }
 
     @Override

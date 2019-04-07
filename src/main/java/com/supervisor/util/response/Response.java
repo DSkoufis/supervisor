@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -21,6 +22,14 @@ public abstract class Response {
     public Response build(HttpServletResponse response) {
         this.setHttpStatus(response);
         return this;
+    }
+
+    public ModelAndView asModel(String viewName) {
+        ModelAndView model = new ModelAndView(viewName);
+        model.setStatus(this.getHttpStatus());
+
+        result.addModelAttributes(model);
+        return model;
     }
 
     @JsonValue
