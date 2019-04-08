@@ -2,7 +2,7 @@ SUP = SUP || {};
 
 SUP.ajaxHelper = (function () {
     let extractJsonResponse = function (jqxhr) {
-        let responseText = jqxhr.responseText;
+        var responseText = jqxhr.responseText;
         return {
             originalRequest: jqxhr,
             responseText: responseText,

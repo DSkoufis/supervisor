@@ -1,14 +1,14 @@
-<%@ tag description="Returns the create products modal" body-content="empty" isELIgnored="false" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="visor" uri="http://www.supervisor.com/tags/core" %>
 
-<%@ attribute name="modalId" required="true" type="java.lang.String"
-              rtexprvalue="true" description="The ID that's going to be used as the modal ID" %>
+<jsp:useBean id="productController" class="com.supervisor.controller.ProductController"/>
+<c:set var="productSave"><visor:reverseUrl controller="${productController['class']}" action="createProduct"/></c:set>
 
-<div class="modal fade" id="${modalId}" tabindex="-1" role="dialog"
+<div class="modal fade" id="${param.modalId}" tabindex="-1" role="dialog"
      aria-labelledby="createProductLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -19,8 +19,6 @@
                 </button>
             </div>
             <div class="modal-body">
-                <jsp:useBean id="productController" class="com.supervisor.controller.ProductController"/>
-                <c:set var="productSave"><visor:reverseUrl controller="${productController['class']}" action="createProduct"/></c:set>
                 <jsp:useBean id="command" scope="request" class="com.supervisor.command.ProductSaveCommand"/>
                 <form:form method="POST" action="${productSave}" id="createProductForm" novalidate="true">
                     <div class="form-group">
@@ -45,7 +43,7 @@
     $(function () {
         'use strict';
         window.addEventListener('load', function () {
-            let form = document.getElementById("createProductForm");
+            var form = document.getElementById("createProductForm");
             form.addEventListener('submit', function (event) {
                 event.preventDefault();
 
@@ -61,20 +59,18 @@
         });
 
         function createProduct() {
-            let form = $("#createProductForm");
-            let data = form.serializeArray();
-            let url = form.attr("action");
+            var form = $("#createProductForm");
+            var data = form.serializeArray();
+            var url = form.attr("action");
 
             $.post({
                 "url": url,
-                "data": data,
-                "dataType": "application/json"
+                "data": data
             }).done(function (response) {
-                response = SUP.ajaxHelper.extractJson(response);
-                console.log(response);
+                $("#productsList > tbody").append(response);
+                $('#${param.modalId}').modal('hide')
             }).fail(function (response) {
-                response = SUP.ajaxHelper.extractJson(response);
-                console.log(response);
+                console.log(response.responseText);
             });
         }
     });
