@@ -39,8 +39,7 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MajorVersion> majorVersions = new HashSet<>();
 
-    public Product() {
-    }
+    public Product() {}
 
     public Product(String name) {
         this.name = Objects.requireNonNull(name);

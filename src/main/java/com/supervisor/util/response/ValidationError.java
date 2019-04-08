@@ -96,8 +96,8 @@ class ValidationError implements ActionResultAware<ValidationError.Result> {
     public List<Result> getResults() { return this.errors; }
 
     @Override
-    public void addModelAttributes(ModelAndView model) {
-        model.addObject("validationErrors", errors);
+    public void addResultModelAttribute(String attributeName, ModelAndView model) {
+        model.addObject(attributeName, errors);
     }
 
     @Override

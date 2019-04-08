@@ -8,7 +8,7 @@ public interface ActionResultAware<T> {
 
     List<T> getResults();
 
-    void addModelAttributes(ModelAndView model);
+    void addResultModelAttribute(String attributeName, ModelAndView model);
 
     boolean isError();
 

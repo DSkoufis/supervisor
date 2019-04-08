@@ -14,6 +14,7 @@ public abstract class Response {
     ActionResultAware result;
 
     abstract HttpStatus getHttpStatus();
+    abstract void addModelAttributes(ModelAndView model);
 
     private void setHttpStatus(HttpServletResponse servletResponse) {
         servletResponse.setStatus(this.getHttpStatus().value());
@@ -28,7 +29,7 @@ public abstract class Response {
         ModelAndView model = new ModelAndView(viewName);
         model.setStatus(this.getHttpStatus());
 
-        result.addModelAttributes(model);
+        this.addModelAttributes(model);
         return model;
     }
 

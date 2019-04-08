@@ -25,8 +25,7 @@ class ProductVersionCommonInfo implements VersionCommonInfo {
     @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
 
-    ProductVersionCommonInfo() {
-    }
+    ProductVersionCommonInfo() {}
 
     @Override public String getVersion() {
         return version;

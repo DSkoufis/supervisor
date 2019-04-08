@@ -43,19 +43,19 @@ public class ProductController {
     // TODO: _productCreateModal and _productsListItem doesn't exist
     public ModelAndView createProduct(@Valid @ModelAttribute("command") ProductSaveCommand cmd, BindingResult result) {
         if (result.hasErrors()) {
-            return ProductCreationResponse.from(result.getAllErrors()).asModel(getProductViewName("_productCreateModal"));
+            return ProductCreationResponse.from(result.getAllErrors()).asModel(getProductViewName("_createProductModal"));
         }
 
         ProductCreationResponse response;
         try {
             Product product = productService.saveProduct(cmd);
-            return ProductCreationResponse.from(product).asModel(getProductViewName("_productsListItem"));
+            return ProductCreationResponse.from(product).asModel(getProductViewName("_productListItem"));
         } catch (javax.validation.ConstraintViolationException ex) {
             response = ProductCreationResponse.from(ex);
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
             response = ProductCreationResponse.from("name", "product.Product.name.unique", "product.Product.name.unique");
         }
-        return response.asModel(getProductViewName("_productCreateModal"));
+        return response.asModel(getProductViewName("_createProductModal"));
     }
 
     private String getProductViewName(String viewName) {

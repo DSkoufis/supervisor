@@ -21,8 +21,8 @@ public class ActionSuccess<T> implements ActionResultAware<T> {
     }
 
     @Override
-    public void addModelAttributes(ModelAndView model) {
-        model.addObject("results", object);
+    public void addResultModelAttribute(String attributeName, ModelAndView model) {
+        model.addObject(attributeName, object);
     }
 
     @Override

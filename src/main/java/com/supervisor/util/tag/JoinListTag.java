@@ -15,7 +15,7 @@ public class JoinListTag extends CustomAbstractTag {
     private String var;
 
     public void setList(Collection list) {
-        if (list.size() > 0) {
+        if (list != null && !list.isEmpty()) {
             this.iterator = list.iterator();
         }
     }
