@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-class ValidationError implements ActionResultAware<ValidationError.Result> {
+public class ValidationError implements ActionResultAware<ValidationError.Result> {
 
     private static final ValidationError staticAccessor = new ValidationError();
 
@@ -106,7 +106,7 @@ class ValidationError implements ActionResultAware<ValidationError.Result> {
     @Override
     public boolean isSuccess() { return this.errors.isEmpty(); }
 
-    static class Result {
+    public static class Result {
         private String field;
         private String code;
         private String message;

@@ -19,9 +19,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <jsp:include page="_createProductForm.jsp">
-                    <jsp:param name="productSave" value="${productSave}"/>
-                </jsp:include>
+                <jsp:useBean id="command" scope="request" class="com.supervisor.command.ProductSaveCommand"/>
+                <form:form method="POST" action="${productSave}" id="createProductForm" novalidate="true">
+                    <jsp:include page="_createProductForm.jsp"/>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form:form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -59,9 +62,10 @@
                 "data": data
             }).done(function (response) {
                 $("#productsList > tbody").append(response);
-                $('#${param.modalId}').modal('hide')
+                $('#${param.modalId}').modal('hide');
             }).fail(function (response) {
-                console.log(response.responseText);
+                $('#formResponse').html(response.responseText);
+                form.addClass("was-validated");
             });
         }
     });

@@ -47,7 +47,7 @@ public class ProductController {
         modelMap.put("command", cmd);
 
         if (result.hasErrors()) {
-            return ProductCreationResponse.from(result.getAllErrors()).asModel(getProductViewName("_createProductModal"), modelMap);
+            return ProductCreationResponse.from(result.getAllErrors()).asModel(getProductViewName("_createProductForm"), modelMap);
         }
 
         ProductCreationResponse response;
@@ -59,7 +59,7 @@ public class ProductController {
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
             response = ProductCreationResponse.from("name", "product.Product.name.unique", "product.Product.name.unique");
         }
-        return response.asModel(getProductViewName("_createProductModal"), modelMap);
+        return response.asModel(getProductViewName("_createProductForm"), modelMap);
     }
 
     private String getProductViewName(String viewName) {
