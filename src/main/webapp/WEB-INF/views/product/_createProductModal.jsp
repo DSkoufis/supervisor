@@ -19,17 +19,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <jsp:useBean id="command" scope="request" class="com.supervisor.command.ProductSaveCommand"/>
-                <form:form method="POST" action="${productSave}" id="createProductForm" novalidate="true">
-                    <div class="form-group">
-                        <form:label path="name">Name</form:label>
-                        <form:input path="name" placeholder="Product name" cssClass="form-control" required="true"/>
-                        <div class="invalid-feedback">
-                            <spring:message code="product.Product.name.notBlank"/>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form:form>
+                <jsp:include page="_createProductForm.jsp">
+                    <jsp:param name="productSave" value="${productSave}"/>
+                </jsp:include>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -39,7 +31,6 @@
 </div>
 
 <script>
-    SUP = SUP || {};
     $(function () {
         'use strict';
         window.addEventListener('load', function () {

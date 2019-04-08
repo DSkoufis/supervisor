@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ public abstract class Response {
     ActionResultAware result;
 
     abstract HttpStatus getHttpStatus();
+
     abstract void addModelAttributes(ModelAndView model);
 
     private void setHttpStatus(HttpServletResponse servletResponse) {
@@ -26,11 +28,24 @@ public abstract class Response {
     }
 
     public ModelAndView asModel(String viewName) {
+        return this.asModel(viewName, null);
+    }
+
+    public ModelAndView asModel(String viewName, Map<String, ?> extraModelAttributes) {
         ModelAndView model = new ModelAndView(viewName);
         model.setStatus(this.getHttpStatus());
 
         this.addModelAttributes(model);
+
+        addExtraAttributesToModel(model, extraModelAttributes);
         return model;
+    }
+
+    private void addExtraAttributesToModel(ModelAndView model, Map<String, ?> extraArgs) {
+        if (extraArgs != null) {
+            extraArgs.values().removeAll(Collections.singleton(null));
+            model.addAllObjects(extraArgs);
+        }
     }
 
     @JsonValue

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.supervisor.util.constant.ViewMapping.PRODUCT_VIEW_PATH;
 
@@ -40,10 +42,12 @@ public class ProductController {
     }
 
     @PostMapping(value = "/save")
-    // TODO: _productCreateModal and _productsListItem doesn't exist
     public ModelAndView createProduct(@Valid @ModelAttribute("command") ProductSaveCommand cmd, BindingResult result) {
+        Map<String, Object> modelMap = new HashMap<>();
+        modelMap.put("command", cmd);
+
         if (result.hasErrors()) {
-            return ProductCreationResponse.from(result.getAllErrors()).asModel(getProductViewName("_createProductModal"));
+            return ProductCreationResponse.from(result.getAllErrors()).asModel(getProductViewName("_createProductModal"), modelMap);
         }
 
         ProductCreationResponse response;
@@ -55,7 +59,7 @@ public class ProductController {
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
             response = ProductCreationResponse.from("name", "product.Product.name.unique", "product.Product.name.unique");
         }
-        return response.asModel(getProductViewName("_createProductModal"));
+        return response.asModel(getProductViewName("_createProductModal"), modelMap);
     }
 
     private String getProductViewName(String viewName) {

@@ -53,9 +53,16 @@ public class ProductCreationResponse extends Response {
 
     @Override
     void addModelAttributes(ModelAndView model) {
-        Map<String, Long> loopInfo = new HashMap<>();
-        loopInfo.put("count", productRepository.count());
-        model.addObject("loopInfo", loopInfo);
-        this.result.addResultModelAttribute("product", model);
+        String attributeName;
+        if (result.isSuccess()) {
+            Map<String, Long> loopInfo = new HashMap<>();
+            loopInfo.put("count", productRepository.count());
+            model.addObject("loopInfo", loopInfo);
+
+            attributeName = "product";
+        } else {
+            attributeName = "errors";
+        }
+        this.result.addResultModelAttribute(attributeName, model);
     }
 }
