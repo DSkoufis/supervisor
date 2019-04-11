@@ -3,7 +3,7 @@ package com.supervisor.controller;
 import com.supervisor.command.ProductSaveCommand;
 import com.supervisor.domain.product.Product;
 import com.supervisor.service.ProductService;
-import com.supervisor.util.response.ProductCreationResponse;
+import com.supervisor.util.response.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.supervisor.util.constant.ViewMapping.PRODUCT_VIEW_PATH;
 
@@ -26,7 +24,8 @@ public class ProductController {
 
     private ProductService productService;
 
-    public ProductController() {}
+    public ProductController() {
+    }
 
     @Autowired
     public ProductController(ProductService productService) {
@@ -43,23 +42,22 @@ public class ProductController {
 
     @PostMapping(value = "/save")
     public ModelAndView createProduct(@Valid @ModelAttribute("command") ProductSaveCommand cmd, BindingResult result) {
-        Map<String, Object> modelMap = new HashMap<>();
-        modelMap.put("command", cmd);
+        ProductResponse response = new ProductResponse();
 
         if (result.hasErrors()) {
-            return ProductCreationResponse.from(result.getAllErrors()).asModel(getProductViewName("_createProductForm"), modelMap);
+            return response.withErrors(result.getAllErrors()).andModelAttribute("command", cmd)
+                    .asModel(getProductViewName("_createProductForm"));
         }
 
-        ProductCreationResponse response;
         try {
             Product product = productService.saveProduct(cmd);
-            return ProductCreationResponse.from(product).asModel(getProductViewName("_productListItem"));
+            return response.withSuccess(product).asModel(getProductViewName("_productListItem"));
         } catch (javax.validation.ConstraintViolationException ex) {
-            response = ProductCreationResponse.from(ex);
+            response.withErrors(ex);
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
-            response = ProductCreationResponse.from("name", "product.Product.name.unique", "product.Product.name.unique");
+            response.withErrors("name", null, "product.Product.name.unique");
         }
-        return response.asModel(getProductViewName("_createProductForm"), modelMap);
+        return response.andModelAttribute("command", cmd).asModel(getProductViewName("_createProductForm"));
     }
 
     private String getProductViewName(String viewName) {

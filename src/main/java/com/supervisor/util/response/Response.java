@@ -1,31 +1,40 @@
 package com.supervisor.util.response;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.supervisor.configuration.SpringApplicationContext;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-public abstract class Response {
-    ActionResultAware result;
+public abstract class Response<T extends Response, R> {
+
+    private final MessageSource messageSource;
+
+    private AbstractResultSet results;
+    private Map<String, Object> extraModelAttributes;
+
+    Response() {
+        this.results = new AbstractResultSet();
+        this.extraModelAttributes = new HashMap<>();
+        this.messageSource = SpringApplicationContext.getBean(MessageSource.class);
+    }
+
+    abstract T returnThis();
 
     abstract HttpStatus getHttpStatus();
 
     abstract void addModelAttributes(ModelAndView model);
-
-    private void setHttpStatus(HttpServletResponse servletResponse) {
-        servletResponse.setStatus(this.getHttpStatus().value());
-    }
-
-    public Response build(HttpServletResponse response) {
-        this.setHttpStatus(response);
-        return this;
-    }
 
     public ModelAndView asModel(String viewName) {
         return this.asModel(viewName, null);
@@ -46,20 +55,71 @@ public abstract class Response {
             extraArgs.values().removeAll(Collections.singleton(null));
             model.addAllObjects(extraArgs);
         }
+
+        model.addAllObjects(this.extraModelAttributes);
     }
 
-    @JsonValue
-    public ObjectNode toJson() {
-        Map results = getCommonJsonElements();
-        results.put("results", result.getResults());
-        return new ObjectMapper().valueToTree(results);
+    public T andModelAttribute(String attribute, Object object) {
+        this.extraModelAttributes.put(attribute, object);
+        return returnThis();
     }
 
-    private Map getCommonJsonElements() {
-        Map commonElements = new HashMap<>();
-        HttpStatus status = getHttpStatus();
-        commonElements.put("status", status.value());
-        commonElements.put("status_description", status.name());
-        return commonElements;
+    boolean isError() { return results.isError(); }
+
+    void addToResults(AbstractResult result) {
+        results.add(result);
+    }
+
+    AbstractResultSet getResults() { return results; }
+
+    public abstract T withSuccess(R result);
+
+    public T withSuccess() {
+        this.addToResults(new SuccessResult());
+        return returnThis();
+    }
+
+    public T withErrors(List<ObjectError> errors) {
+        for (ObjectError error : errors) {
+            String field = ((FieldError) error).getField();
+            String message = error.getDefaultMessage();
+            this.addToResults(getErrorResultFrom(field, message, "", null));
+        }
+        return returnThis();
+    }
+
+    public T withErrors(ConstraintViolationException exception) { return withErrors(exception.getConstraintViolations()); }
+
+    public T withErrors(String field, String message, String code) {
+        this.addToResults(getErrorResultFrom(field, message, code, null));
+        return returnThis();
+    }
+
+    public T withErrors(BindingResult bind) { return withErrors(bind.getAllErrors()); }
+
+    public T withErrors(Set<ConstraintViolation<?>> violations) {
+        for (ConstraintViolation<?> violation : violations) {
+            String field = violation.getPropertyPath().toString();
+            String message = violation.getMessage();
+            String code = violation.getMessageTemplate();
+            Object[] args = new Object[]{violation.getInvalidValue()};
+            this.addToResults(getErrorResultFrom(field, message, code, args));
+        }
+        return returnThis();
+    }
+
+    private AbstractResult getErrorResultFrom(String field, String message, String code, Object[] args) {
+        if (message == null) {
+            message = getMessageFromCode(code, args);
+        } else if (message.equals(code)) {
+            message = getMessageFromCode(code, message, args);
+        }
+        return new ErrorResult(field, code, message);
+    }
+
+    private String getMessageFromCode(String code, Object[] args) { return getMessageFromCode(code, null, args); }
+
+    private String getMessageFromCode(String code, String defaultMessage, Object[] args) {
+        return messageSource.getMessage(code, args, defaultMessage, LocaleContextHolder.getLocale());
     }
 }
